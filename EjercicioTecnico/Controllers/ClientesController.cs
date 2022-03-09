@@ -75,10 +75,11 @@ namespace EjercicioTecnico.Controllers
                 var cliente = await _context.Cliente.FindAsync(id);
                 _context.Cliente.Remove(cliente);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return Json("Ok");
             }
             catch (Exception ex)
             {
+                return Json("No");
                 return RedirectToAction("Error", "Home");
             }
         }
