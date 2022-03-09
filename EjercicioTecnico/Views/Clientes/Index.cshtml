@@ -1,0 +1,177 @@
+﻿@model IEnumerable<EjercicioTecnico.Models.ClienteViewModel>
+
+@{
+    ViewData["Title"] = "Company Application";
+}
+
+<h3><i class="fa-solid fa-circle-info"></i>Añadir Cliente</h3>
+<h6>Añada un cliente para continuar</h6>
+
+<p>
+    <button class="btn btn-success" type="button" data-toggle="modal" data-target="#modal">
+        <i class="fa-solid fa-circle-plus"></i>
+        Añadir Cliente
+    </button>
+</p>
+@if (Model.Any())
+{
+    <h6>Mis Compañías</h6>
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    País
+                </th>
+                <th>
+                    Tipo de Entidad
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pais)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TipoEntidad)
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" onclick="eliminar(@item.Id);" title="Eliminar Cliente"><i class="fa-solid fa-circle-minus"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel">Añadir Cliente</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div id="errorAlert" class="alert alert-danger" role="alert">
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-4 form-group">
+                                <label class="col-md-12">Nombre: *</label>
+                                <input class="col-md-12 form-control" id="nombre" />
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <label class="col-md-12">País: *</label>
+                                <select class="col-md-12 form-control" id="pais">
+                                    <option value="-1" selected>Seleccione un país</option>
+                                    @foreach (var item in ViewBag.Pais)
+                                    {
+                                        <option value="@item.Id">@item.Nombre</option>
+                                    }
+                                </select>
+                                <label class="col-md-12">Valores para dropdown: PR, EU, Otro</label>
+                            </div>
+
+                            <div class="col-md-4 form-group">
+                                <label class="col-md-12">Tipo de entidad: *</label>
+
+                                <input type="radio" id="individuo" name="tipo_entidad" value="1">
+                                <label for="individuo">Individuo</label>
+                                <input type="radio" id="compania" name="tipo_entidad" value="2">
+                                <label for="compania">Compañía</label>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer form-group">
+                    <button type="button" class="btn btn-primary" onclick="SaveChanges();">Save</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.alert').hide();
+        });
+        function SaveChanges() {
+            var obj = {
+                Nombre: $('#nombre').val().toString(),
+                IdPais: parseInt($('#pais').val()),
+                IdTipo: 0
+            };
+            if (document.getElementById('individuo').checked) {
+                obj.IdTipo = 1;
+            }
+            if (document.getElementById('compania').checked) {
+                obj.IdTipo = 2;
+            }
+
+            if (obj.Nombre === "") {
+                $('.alert')[0].innerHTML = "Debe colocar un Nombre.";
+                $('.alert').show();
+                return;
+            }
+            if (obj.IdPais === -1) {
+                $('.alert')[0].innerHTML = "Debe seleccionar un país.";
+                $('.alert').show();
+                return;
+            }
+            if (obj.IdTipo === 0) {
+                $('.alert')[0].innerHTML = "Debe seleccionar un tipo de entidad.";
+                $('.alert').show();
+                return;
+            }
+
+            var url = "@Url.Action("SaveChanges", "Clientes")";
+            $.ajax({
+                url: url,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(obj),
+                success: function (result) {
+                    if (result == "No") {
+                        $('.alert')[0].innerHTML = "Ocurrió un problema, tal vez no se hayan guardado los datos.";
+                        $('.alert').show();
+                        return;
+                    }
+                    $('#modal').modal('hide');
+                    location.reload();
+                }
+            }).done(function () {
+
+            });
+        }
+
+        function eliminar(id) {
+            var url = "@Url.Action("DeleteClient", "Clientes")";
+            $.ajax({
+                url: url,
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                data: JSON.stringify(id),
+                success: function (result) {
+                    location.reload();
+                }
+            });
+        }
+    </script>
+}
