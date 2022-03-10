@@ -169,6 +169,11 @@
                 dataType: 'json',
                 data: JSON.stringify(id),
                 success: function (result) {
+                    if (result == "No") {
+                        $('.alert')[0].innerHTML = "Ocurrió un problema, tal vez no se hayan eliminado los datos.";
+                        $('.alert').show();
+                        return;
+                    }
                     location.reload();
                 }
             });
