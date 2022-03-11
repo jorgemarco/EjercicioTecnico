@@ -52,57 +52,58 @@
         </tbody>
     </table>
 
-    <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel">Añadir Cliente</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div id="errorAlert" class="alert alert-danger" role="alert">
-                </div>
-                <div class="modal-body">
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-md-4 form-group">
-                                <label class="col-md-12">Nombre: *</label>
-                                <input class="col-md-12 form-control" id="nombre" />
-                            </div>
+}
 
-                            <div class="col-md-4 form-group">
-                                <label class="col-md-12">País: *</label>
-                                <select class="col-md-12 form-control" id="pais">
-                                    <option value="-1" selected>Seleccione un país</option>
-                                    @foreach (var item in ViewBag.Pais)
-                                    {
-                                        <option value="@item.Id">@item.Nombre</option>
-                                    }
-                                </select>
-                                <label class="col-md-12">Valores para dropdown: PR, EU, Otro</label>
-                            </div>
+<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Añadir Cliente</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div id="errorAlert" class="alert alert-danger" role="alert">
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4 form-group">
+                            <label class="col-md-12">Nombre: *</label>
+                            <input class="col-md-12 form-control" id="nombre" />
+                        </div>
 
-                            <div class="col-md-4 form-group">
-                                <label class="col-md-12">Tipo de entidad: *</label>
+                        <div class="col-md-4 form-group">
+                            <label class="col-md-12">País: *</label>
+                            <select class="col-md-12 form-control" id="pais">
+                                <option value="-1" selected>Seleccione un país</option>
+                                @foreach (var item in ViewBag.Pais)
+                                {
+                                    <option value="@item.Id">@item.Nombre</option>
+                                }
+                            </select>
+                            <label class="col-md-12">Valores para dropdown: PR, EU, Otro</label>
+                        </div>
 
-                                <input type="radio" id="individuo" name="tipo_entidad" value="1">
-                                <label for="individuo">Individuo</label>
-                                <input type="radio" id="compania" name="tipo_entidad" value="2">
-                                <label for="compania">Compañía</label>
+                        <div class="col-md-4 form-group">
+                            <label class="col-md-12">Tipo de entidad: *</label>
 
-                            </div>
+                            <input type="radio" id="individuo" name="tipo_entidad" value="1">
+                            <label for="individuo">Individuo</label>
+                            <input type="radio" id="compania" name="tipo_entidad" value="2">
+                            <label for="compania">Compañía</label>
+
                         </div>
                     </div>
                 </div>
-                <div class="modal-footer form-group">
-                    <button type="button" class="btn btn-primary" onclick="SaveChanges();">Save</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
-                </div>
+            </div>
+            <div class="modal-footer form-group">
+                <button type="button" class="btn btn-primary" onclick="SaveChanges();">Save</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>
-}
+</div>
 
 
 @section Scripts{
